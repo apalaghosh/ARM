@@ -54,7 +54,7 @@
                     "scope": "outer"
                 },
                 "templateLink": {
-                    "uri": "https://github.com/apalaghosh/ARM/blob/main/Test.json"
+                    "relativePath": "Test.json"
                 },
                 "parameters": {
                     "location": {
