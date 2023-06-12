@@ -24,7 +24,7 @@
         },
         "hostingPlanName": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "devsangam",
             "metadata": {
                 "description": "App service plan name."
             }
