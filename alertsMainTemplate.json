@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource location."
+            }
+        },
+        "sqlServerName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Sql server name."
+            }
+        },
+        "databaseName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Database name."
+            }
+        },
+        "hostingPlanName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "App service plan name."
+            }
+        },
+        "webSiteName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "App service url."
+            }
+        },
+        "_artifactsLocation": {
+            "type": "string"
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2022-12-01",
+            "name": "cpuUsageAlertTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "outer"
+                },
+                "templateLink": {
+                    "uri": "https://github.com/apalaghosh/ARM/blob/main/Test.json"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "hostingPlanName": {
+                        "value": "[parameters('hostingPlanName')]"
+                    },
+                    "alertName":{
+                        "value": "TestCPUApala"
+                    }
+                }
+            }
+        }
+    ]
+}
