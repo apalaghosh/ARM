@@ -1,0 +1,101 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource location."
+      }
+    },
+    "hostingPlanName": {
+      "type": "string",
+      "metadata": {
+        "description": "App service plan name."
+      }
+    },
+    "alertName": {
+      "type": "string"
+    },
+    "contactEmailAddresses": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "threshold": {
+      "type": "int",
+      "defaultValue": "80"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Insights/actionGroups",
+      "apiVersion": "2023-06-20",
+      "name": "[parameters('alertName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "groupShortName": "[parameters('alertName')]",
+        "enabled": true,
+        "emailReceivers": [
+          {
+            "name": "[parameters('alertName')]",
+            "emailAddress": "[parameters('contactEmailAddresses')]",
+            "useCommonAlertSchema": false
+          }
+        ],
+        "smsReceivers": [],
+        "webhookReceivers": [],
+        "eventHubReceivers": [],
+        "itsmReceivers": [],
+        "azureAppPushReceivers": [],
+        "automationRunbookReceivers": [],
+        "voiceReceivers": [],
+        "logicAppReceivers": [],
+        "azureFunctionReceivers": [],
+        "armRoleReceivers": [
+          {
+            "name": "[parameters('alertName')]",
+            "roleId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+            "useCommonAlertSchema": false
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Insights/metricAlerts",
+      "apiVersion": "2023-06-20",
+      "name": "[parameters('alertName')]",
+      "location": "global",
+      "properties": {
+        "severity": 3,
+        "enabled": true,
+        "scopes": ["[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "allOf": [
+            {
+              "threshold": "[parameters('threshold')]",
+              "name": "Metric1",
+              "metricNamespace": "Microsoft.Web/serverfarms",
+              "metricName": "CpuPercentage",
+              "operator": "GreaterThan",
+              "timeAggregation": "Average",
+              "skipMetricValidation": false,
+              "criterionType": "StaticThresholdCriterion"
+            }
+          ],
+          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+        },
+        "autoMitigate": true,
+        "targetResourceType": "Microsoft.Web/serverfarms",
+        "targetResourceRegion": "[parameters('location')]",
+        "actions": [
+          {
+            "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('alertName'))]",
+            "webHookProperties": {}
+          }
+        ]
+      }
+    }
+  ]
+}
