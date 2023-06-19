@@ -29,7 +29,7 @@
   "resources": [
     {
       "type": "Microsoft.Insights/actionGroups",
-      "apiVersion": "2022-12-01",
+      "apiVersion": "2023-05-01",
       "name": "[parameters('alertName')]",
       "location": "[parameters('location')]",
       "properties": {
