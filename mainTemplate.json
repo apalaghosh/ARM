@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "threshold": {
+      "type": "int",
+      "defaultValue": "80"
+    },
+    "contactEmailAddresses": {
+      "type": "string"
+    },
+    "hostingPlanName": {
+      "type": "string",
+      "defaultValue": "devsangam"
+    }
+  },
+  "variables": {
+    "ContributorRole": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2020-10-01",
+      "name": "alertsMainTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverFarms', parameters('hostingPlanName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "expressionEvaluationOptions": {
+          "scope": "outer"
+        },
+        "templateLink": {
+          "relativePath": "alertsMainTemplate.json"
+        },
+        "parameters": {
+          "location": {
+            "value": "global"
+          },
+          "hostingPlanName": {
+            "value": "[parameters('hostingPlanName')]"
+          },
+		      "contactEmailAddresses": {
+			      "value": "[parameters('contactEmailAddresses')]"
+		      }
+        }
+      }
+    }
+  ]
+}
