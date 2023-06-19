@@ -17,9 +17,6 @@
       "defaultValue": "devsangam"
     }
   },
-  "variables": {
-    "ContributorRole": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
-  },
   "resources": [
     {
       "apiVersion": "2020-10-01",
