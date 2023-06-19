@@ -43,9 +43,12 @@
           "hostingPlanName": {
             "value": "[parameters('hostingPlanName')]"
           },
-		      "contactEmailAddresses": {
-			      "value": "[parameters('contactEmailAddresses')]"
-		      }
+        "contactEmailAddresses": {
+	    "value": "[parameters('contactEmailAddresses')]"
+         },
+	"threshold": {
+	    "value": "[parameters('threshold')]"
+	}
         }
       }
     }
